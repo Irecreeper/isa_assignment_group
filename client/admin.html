@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body onload = "getRestCount()">
+    <div id="admintitle">
+        <h1>Statistics for Endpoints</h1>
+    </div>
+    <script src="client.js"></script>
+    <div id="tablediv">
+        <table id="stattable">
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Requests</th>
+            </tr>
+            <tr>
+                <td>POST</td>
+                <td>/API/v1/students/id</td>
+                <td id = row0>0</td>
+            </tr>
+            <tr>
+                <td>GET</td>
+                <td>/API/v1/students/id</td>
+                <td id = row1>0</td>
+            </tr>
+            <tr>
+                <td>DELETE</td>
+                <td>/API/v1/students/id</td>
+                <td id = row2>0</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
