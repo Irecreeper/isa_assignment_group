@@ -7,22 +7,35 @@
 	<body>
 		<h1>Gradebase</h1>
 		<div id="key-output"></div>
+		<button onclick="getKey()">Generate!</button>
+		<button onclick="testVerify()">Test Verification!</button>
 		<script>
-			//Ask for a key! Politely!
-			getKey();
+			var key = "totallyinvalid";
 
-			//Send the request.
+			//Gets a key from the server.
 			function getKey() {
 				console.log("Getting key...");
 				const xhttp = new XMLHttpRequest();
-				xhttp.open("GET", "http://localhost:8888?type=key", true);
+				xhttp.open("GET", "http://localhost:8888/key", true);
 				xhttp.send();
 				xhttp.onreadystatechange = function () {
 					if (this.readyState == 4 && this.status == 200) {
 						let target = document.getElementById("key-output");
 						target.innerHTML = this.responseText;
+						key = this.responseText;
 					}
 				}
+			}
+
+			//Attempts verification.
+			function testVerify() {
+				console.log("Attempting verification...");
+
+				let payload = JSON.stringify({apiKey: key});
+
+				const xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "http://localhost:8888/astigmatism?apikey=" + key, true);
+				xhttp.send(payload);
 			}
 			</script>
 	</body>

@@ -19,7 +19,11 @@ db.connect(function (err) {
 http.createServer(function (req, res) {
 	//Get some information on the URL. Just in case.
 	let urlData = url.parse(req.url, true);
-	let requestType = urlData.query["type"];
+	let method = req.method;
+	let requestType = urlData.pathname;
+	let apiKey = urlData.query["apikey"];
+
+	console.log(apiKey);
 
 	//Define some headers to accept all kinds of requests.
 	const headers = {
@@ -28,14 +32,14 @@ http.createServer(function (req, res) {
 	res.writeHead(200, headers);
 
 	//OPTIONS path: properly translates into a different kind of request
-	if (req.method == "OPTIONS") {
+	if (method == "OPTIONS") {
 		res.writeHead(204, headers);
 		res.end();
 		return;
 	}
 
 	//Special Path: Key Request / Generation. Can be accessed without verification.
-	if (req.method == "GET" && requestType == "key") {
+	if (method == "GET" && requestType == "/key") {
 		//Generate a key!
 		let key = keyGen(25);
 		
@@ -52,18 +56,42 @@ http.createServer(function (req, res) {
 		res.end(key);
 	}
 
-	//Get verification before continuing. Check if key is on server.
-	let verified = false;
+	//Get verification before continuing. Check if key is on server. (Or, in case of a GET request, auto-succeed.)
+	let verification_check = new Promise(function(verSuc, verRip) {
+		let sqlSelect = "SELECT key_actual FROM api_keys WHERE key_actual = '" + apiKey + "'";
+		db.query(sqlSelect, function (err, result) {
+			if (err) {
+				verRip();
+				throw err;
+			}
 
-	if (verified) {
+			if (result.length > 0 && result[0].key_actual == apiKey) {
+				verSuc();
+			} else {
+				verRip();
+			}
+		});
+	});
+
+	verification_check.then(
+		function verSuc() {console.log("Verification succeeded!~");},
+		function verRip() {console.log("Verification failed...")}
+	)
+
+	//if (verified) {
 		//GET path: gets information from the server (3 branches)
+		//users, classes, grades
 
 		//POST path: puts data onto the server (3 branches)
+		//users, classes, grades
 
 		//PUT path: edits data that's on the server (2 branches)
+		//users, classes, grades
 
 		//DELETE path: deletes data that's on the server (2 branches)
-	}
+		//classes, grades
+	//}
+
 }).listen(8888);
 console.log("App is running...");
 
