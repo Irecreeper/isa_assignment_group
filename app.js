@@ -1,6 +1,6 @@
 /* jshint esversion: 8 */
 const http = require("http");
-const url = require("url")
+const url = require("url");
 const mysql = require("mysql");
 
 const db = mysql.createConnection({
@@ -13,17 +13,15 @@ const db = mysql.createConnection({
 db.connect(function (err) {
 	if (err) {
 		throw err;
-	};
+	}
 });
 
 http.createServer(function (req, res) {
 	//Get some information on the URL. Just in case.
 	let urlData = url.parse(req.url, true);
-	let method = req.method;
-	let requestType = urlData.pathname;
+	let method = req.method; //get, post, put, delete
+	let requestType = urlData.pathname; //key, user, class, grade
 	let apiKey = urlData.query["apikey"];
-
-	console.log(apiKey);
 
 	//Define some headers to accept all kinds of requests.
 	const headers = {
@@ -38,27 +36,60 @@ http.createServer(function (req, res) {
 		return;
 	}
 
-	//Special Path: Key Request / Generation. Can be accessed without verification.
+	//Special Path: Key Request / Generation. Can be accessed without key verification. For obvious reasons.
 	if (method == "GET" && requestType == "/key") {
-		//Generate a key!
-		let key = keyGen(25);
 		
-		//Add the key to the database.
-		let sqlInsert = "INSERT INTO api_keys(key_actual) VALUES ('" + key + "')";
-		db.query(sqlInsert, function (err, result) {
-			if (err) {
-				throw err;
-			}
-			console.log("Key added.");
+		//First, verify the user's password.
+		let notedId = -1;
+		let password = urlData.query["password"];
+		let username = urlData.query["username"];
+		let passwordCheck = new Promise(function(verSuc, verRip) {
+			let sqlCheck = "SELECT password_hashed, user_id FROM user WHERE username = '" + username + "'";
+			db.query(sqlCheck, function (err, result){
+				if (err) {
+					verRip();
+					throw err;
+				}
+
+				if (result.length > 0 && result[0].password_hashed == password) {
+					notedId = result[0].user_id;
+					verSuc();
+				} else {
+					verRip();
+				}
+			});
 		});
 
-		//Return the key to the user.
-		res.end(key);
+		//If we verified, go forth and give the user a key. Otherwise, rippp
+		passwordCheck.then(
+			function verSuc() {
+				//Generate a key!
+				let key = keyGen(25);
+				
+				//Add the key to the database.
+				let sqlInsert = "INSERT INTO api_keys(key_actual, user_id) VALUES ('" + key + "', '" + notedId + "')";
+				db.query(sqlInsert, function (err, result) {
+					if (err) {
+						throw err;
+					}
+					console.log("Key added.");
+				});
+
+				//Return the key to the user.
+				res.end(key);
+			},
+			function verRip() {
+				console.log("Password verification failed.");
+				res.end("Failure...");
+			}
+		);
 	}
 
-	//Get verification before continuing. Check if key is on server. (Or, in case of a GET request, auto-succeed.)
+	//Get verification before continuing. Check if key is on server.
+	let verified = false;
+	let notedId = -1;
 	let verification_check = new Promise(function(verSuc, verRip) {
-		let sqlSelect = "SELECT key_actual FROM api_keys WHERE key_actual = '" + apiKey + "'";
+		let sqlSelect = "SELECT key_actual, user_id FROM api_keys WHERE key_actual = '" + apiKey + "'";
 		db.query(sqlSelect, function (err, result) {
 			if (err) {
 				verRip();
@@ -66,40 +97,83 @@ http.createServer(function (req, res) {
 			}
 
 			if (result.length > 0 && result[0].key_actual == apiKey) {
+				notedId = result[0].user_id;
 				verSuc();
 			} else {
 				verRip();
+				res.end(); //early death
 			}
 		});
 	});
 
 	verification_check.then(
-		function verSuc() {console.log("Verification succeeded!~");},
-		function verRip() {console.log("Verification failed...")}
-	)
+		function verSuc() {verified = true; console.log("Verification succeeded!~");},
+		function verRip() {console.log("Verification failed...");}
+	);
 
-	//if (verified) {
+	if (verified) {
 		//GET path: gets information from the server (3 branches)
 		//users, classes, grades
+		if (method == "GET") {
+			//First, go select the proper query.
+			let sqlGet = "err";
+			if (requestType == "/user") { //USER: Obtains information on the specified user. Requires USERNAME.
+				//Obtain required elements.
+				let username = urlData.query["username"];
+				sqlGet = "SELECT * FROM user WHERE username = '" + username + "'";
+			} else if (requestType == "/class") { //CLASS: Obtains information on the specified class. Requires CLASSNAME.
+				let classname = urlData.query["classname"];
+				sqlGet = "";
+			} else if (requestType == "/grade") { //GRADES: Obtains information on the specified grade. Requires CLASSNAME, GRADENAME.
+				let gradename = urlData.query["gradename"];
+				let classname = urlData.query["classname"];
+				sqlGet = "";
+			} else { //Basically a failure state.
+				res.end();
+			}
+			
+			//Perform the query!
+			if (sqlGet != "err") {
+				db.query(sqlGet, function (err, result) {
+					if (err) {
+						throw err;
+					}
+
+					let item = JSON.stringify(result[0]);
+					res.end(item);
+				});
+			}
+		}
 
 		//POST path: puts data onto the server (3 branches)
 		//users, classes, grades
+		if (method == "POST") {
+
+		}
 
 		//PUT path: edits data that's on the server (2 branches)
 		//users, classes, grades
+		if (method == "PUT") {
+
+		}
 
 		//DELETE path: deletes data that's on the server (2 branches)
 		//classes, grades
-	//}
+		if (method == "DELETE") {
+
+		}
+	}
 
 }).listen(8888);
 console.log("App is running...");
 
-//Helper functions.
+// = = = = = Helper functions.
+//Generates a random int.
 function getRandomInt(max) {
 	return Math.floor(Math.random() * max);
 }
 
+//Generates a key.
 function keyGen(keylen) {
 	let key = "";
 	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
