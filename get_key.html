@@ -6,23 +6,53 @@
 	</head>
 	<body>
 		<h1>Gradebase</h1>
-		<div id="key-output"></div>
+		<p>Username</p>
+		<input id="username"/>
+		<p>Password</p>
+		<input id="password"/>
+		<p>API Key</p>
+		<input id="key-output"/>
+		<button onclick="getKey()">Get API Key!</button>
+		<button onclick="testVerify()">Test Verification!</button>
 		<script>
-			//Ask for a key! Politely!
-			getKey();
-
-			//Send the request.
+			//Gets a key from the server.
 			function getKey() {
 				console.log("Getting key...");
+
+				let username = document.getElementById("username").value;
+				let password = document.getElementById("password").value;
+
 				const xhttp = new XMLHttpRequest();
-				xhttp.open("GET", "http://localhost:8888?type=key", true);
+				xhttp.open("GET", "http://localhost:8888/key?username=" + username + "&password=" + password, true);
 				xhttp.send();
 				xhttp.onreadystatechange = function () {
 					if (this.readyState == 4 && this.status == 200) {
 						let target = document.getElementById("key-output");
-						target.innerHTML = this.responseText;
+						target.value = this.responseText;
 					}
 				}
+			}
+
+			//Attempts verification.
+			function testVerify() {
+				console.log("Attempting verification...");
+
+				let key = document.getElementById("key-output").value;
+				let payload = JSON.stringify({apiKey: key});
+
+				const xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "http://localhost:8888/astigmatism?apikey=" + key, true);
+				xhttp.send(payload);
+			}
+
+			//Attempts user creation
+			function testCreate() {
+				console.log("Attempting creation.");
+				let payload = JSON.stringify({username: "apple", password: "banana", fname: "carrot", lname: "darrot"});
+
+				const xhttp = new XMLHttpRequest();
+				xhttp.open("POST", "http://localhost:8888/user", true);
+				xhttp.send(payload);
 			}
 			</script>
 	</body>
