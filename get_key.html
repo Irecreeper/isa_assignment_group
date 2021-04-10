@@ -44,6 +44,16 @@
 				xhttp.open("GET", "http://localhost:8888/astigmatism?apikey=" + key, true);
 				xhttp.send(payload);
 			}
+
+			//Attempts user creation
+			function testCreate() {
+				console.log("Attempting creation.");
+				let payload = JSON.stringify({username: "apple", password: "banana", fname: "carrot", lname: "darrot"});
+
+				const xhttp = new XMLHttpRequest();
+				xhttp.open("POST", "http://localhost:8888/user", true);
+				xhttp.send(payload);
+			}
 			</script>
 	</body>
 </html>
