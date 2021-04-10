@@ -48,14 +48,13 @@ let putUser = (username, newusername, newfirst, newlast, newpassword) => {
                     "password" : newpassword};
 
     const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", endPointRoot + "user?username=" + username, true);
+    xhttp.open("PUT", endPointRoot + "user?username=" + username + "&apikey=" + key, true);
     xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    xhttp.setRequestHeader('Authorization', 'Bearer' + key);
     xhttp.send(userJSON);
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             alert("Details Successfully Updated.");
-            this.window.location = 'file://C:/nodeJStest/term_project/isa_assignment_group/client/html/mainpage.html';
+            this.window.location = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/mainpage.html';
         }
     }
 }

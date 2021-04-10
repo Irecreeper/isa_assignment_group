@@ -3,14 +3,14 @@
 <head>
     <title>Main Page after Logging in or Signing In for Gradebook</title>
 </head>
-<script src="../js/client.js"></script> 
 <script src="../js/mainpage.js"></script>
 <body onload = "createClassList()">
     
     <div id="mainpage_div_title"><h1>Welcome back,</h1></div>
     <div id="mainpage_div_personaldetails">
-        <button type="button" id="mainpage_button_details">Edit Personal Details</button>
+        <button type="button" id="mainpage_button_details" onclick = "onClickUserEditPage()">Edit Personal Details</button>
     </div>
+    <br>
     <div id="mainpage_classlist">
                
     </div>

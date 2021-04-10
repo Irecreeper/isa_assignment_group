@@ -14,7 +14,7 @@ let createClassList = () => {
         "classname": "sample2",
         "student" : "samplestudent2"
     }]
-    createJSONTable(classJSON, "mainpage_gradelist");
+    createJSONTable(classJSON, "mainpage_classlist");
 }
 
 //Method to create Table for Display based on JSON recieved from GET request.
@@ -44,6 +44,7 @@ let createJSONTable = (JSONObject, elementID) => {
         for(let j = 0; j < col.length; j++) {
             let tabCell = tr.insertCell(-1);
             tabCell.innerHTML = JSONObject[i][col[j]];
+            //tabCell.onclick = onClickGradePage();
         }
     }
     
@@ -87,9 +88,13 @@ let postClass = () => {
 let onClickGradePage = () => {
     let classname = this.innerHTML;
     myStorage.setItem('classname', classname);
-    this.window.location = 'file://C:/nodeJStest/term_project/isa_assignment_group/client/html/gradepage.html';
+    this.window.location = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/gradepage.html';
 }
 
+//Method to redirect to User Details Edit page
+let onClickUserEditPage = () => {
+    this.window.location = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/useredit.html';
+}
 //AJAX Call to PUT new details of a Class.
 let putClass = (classname) => {
     const xhttp = new XMLHttpRequest();

@@ -32,5 +32,5 @@ let login = () => {
 }
 //Function to redirect to signup page.
 let onClickSignUp = () => {
-    this.window.location = 'file://C:/nodeJStest/term_project/isa_assignment_group/client/html/signup.html';
+    this.window.location = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/signup.html';
 }

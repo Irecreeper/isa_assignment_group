@@ -14,7 +14,7 @@ const endPointRoot = "https://www.bcitchairheir.com/COMP4537/termproject/API/v1/
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             alert("Successfully Registered!");
-            this.window.location = 'file://C:/nodeJStest/term_project/isa_assignment_group/client/html/login.html';
+            this.window.location = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/login.html';
         }
     }
 }

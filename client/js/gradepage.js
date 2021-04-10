@@ -2,6 +2,41 @@ const endPointRoot = "https://www.bcitchairheir.com/COMP4537/termproject/API/v1/
 const myStorage = window.localStorage;
 const key = myStorage.getItem('apikey');
 
+//Method to generate table of Grades for the class.
+let buildGradeTable = (JSONObject, elementID) => {
+    var col = [];
+    for(let i = 0; i < JSONObject.length; i++) {
+        for(let key in JSONObject[i]) {
+            if(col.indexOf(key) === -1) {
+                col.push(key);
+            }
+        }
+    }
+
+    //Create Header For Table
+    let table = document.createElement("table");
+    let tr = table.insertRow(-1);
+    for(let i = 0; i < col.length; i++) {
+        let th = document.createElement("th");
+        th.innerHTML = col[i];
+        tr.appendChild(th);
+    }
+
+    //Create Rows for Each Entry
+    for(let i = 0; i < JSONObject.length; i++) {
+        tr = table.insertRow(-1);
+
+        for(let j = 0; j < col.length; j++) {
+            let tabCell = tr.insertCell(-1);
+            tabCell.innerHTML = JSONObject[i][col[j]];
+        }
+    }
+    
+    let divContainer = document.getElementById(elementID);
+    divContainer.innerHTML = "";
+    divContainer.appendChild(table);
+}
+
 //onLoad Method to append table of Grades to the page.
 let onLoadGetGrades = () => {
     let gradeJSON = getGrades();
@@ -66,41 +101,6 @@ let deleteGrade = (gradename, classname) => {
             alert(this.responseText);
         }
     }
-}
-
-//Method to generate table of Grades for the class.
-let buildGradeTable = (JSONObject, elementID) => {
-    var col = [];
-    for(let i = 0; i < JSONObject.length; i++) {
-        for(let key in JSONObject[i]) {
-            if(col.indexOf(key) === -1) {
-                col.push(key);
-            }
-        }
-    }
-
-    //Create Header For Table
-    let table = document.createElement("table");
-    let tr = table.insertRow(-1);
-    for(let i = 0; i < col.length; i++) {
-        let th = document.createElement("th");
-        th.innerHTML = col[i];
-        tr.appendChild(th);
-    }
-
-    //Create Rows for Each Entry
-    for(let i = 0; i < JSONObject.length; i++) {
-        tr = table.insertRow(-1);
-
-        for(let j = 0; j < col.length; j++) {
-            let tabCell = tr.insertCell(-1);
-            tabCell.innerHTML = JSONObject[i][col[j]];
-        }
-    }
-    
-    let divContainer = document.getElementById(elementID);
-    divContainer.innerHTML = "";
-    divContainer.appendChild(table);
 }
 
 //onClick Method to add a new grade.
