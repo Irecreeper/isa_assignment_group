@@ -1,7 +1,10 @@
-let redirect_signup = () => {
-    this.window.location = 'file://C:/nodeJStest/term_project/isa_assignment_group/client/html/signup.html';
-}
+const endPointRoot = "https://www.bcitchairheir.com/COMP4537/termproject/API/v1/";
+const myStorage = window.localStorage;
+const key = myStorage.getItem('apikey');
+
+//Function to generate a table of classes connected to user, via GET request.
 let createClassList = () => {
+    //let classJSON = getClasses();
     let classJSON =  [
     {
         "classname": "sample1",
@@ -13,7 +16,8 @@ let createClassList = () => {
     }]
     createJSONTable(classJSON, "mainpage_gradelist");
 }
-//Method to create Table for Display based on JSON recieved from GET requests.
+
+//Method to create Table for Display based on JSON recieved from GET request.
 let createJSONTable = (JSONObject, elementID) => {
     var col = [];
     for(let i = 0; i < JSONObject.length; i++) {
@@ -46,4 +50,67 @@ let createJSONTable = (JSONObject, elementID) => {
     let divContainer = document.getElementById(elementID);
     divContainer.innerHTML = "";
     divContainer.appendChild(table);
+}
+
+//AJAX Call to get JSON of classes for the user via GET request.
+let getClasses = () => {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", endPointRoot + "class?apikey=" + key, true);
+    xhttp.setRequestHeader('Content-Type', 'applicaton/json; charset=utf-8');
+    xhttp.send();
+    xhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            let data = xhttp.response;
+            buildGradeTable(data);
+        }
+    }
+}
+
+//AJAX Call to POST new class to user.
+let postClass = () => {
+    let newclassname = document.getElementById("mainpage_input_addclass").value;
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", endPointRoot + "class?classname=" + newclassname +"&apikey=" + key, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xhttp.send();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            alert(this.responseText);
+            location.reload();
+        } else {
+            alert("Class Failed to Add, Try Again.");
+        }
+    }
+}
+
+//Method to redirect to a page showing all the grades under a class.
+let onClickGradePage = () => {
+    let classname = this.innerHTML;
+    myStorage.setItem('classname', classname);
+    this.window.location = 'file://C:/nodeJStest/term_project/isa_assignment_group/client/html/gradepage.html';
+}
+
+//AJAX Call to PUT new details of a Class.
+let putClass = (classname) => {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("PUT", endPointRoot + "class?classname=" + classname +"&apikey=" + key, true);
+    xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+    xhttp.send(classJSON);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+        }
+    }
+}
+
+//AJAX Call to DELETE a class.
+let deleteClass = (classname) => {
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("DELETE", endPointRoot + "class?classname=" + classname + "&apikey=" + key, true);
+    xhttp.send();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+        }
+    }
 }
