@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grades Page after Selecting a Class</title>
+</head>
+<script src="../js/gradepage.js"></script> 
+<body onload = "onLoadGetGrades()">
+    
+    <div id="gradepage_div_title"><h1>Grades for </h1></div>
+    <div id="gradepage_list">
+        
+    </div>
+    <div id="gradepage_addgrade">
+        <label for="gradepage_input_gradename">New Grade Name:</label>
+        <input type="text" id="gradepage_input_gradename"></div>
+        <br>
+        <label for="gradepage_input_gradescore">New Grade Score:</label>
+        <input type="number" id="gradepage_input_gradescore"></div>
+        <br>
+        <button type="button" onclick="onClickPostGrade()">Add Grade</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Main Page after Logging in or Signing In for Gradebook</title>
+</head>
+<script src="../js/mainpage.js"></script>
+<body onload = "createClassList()">
+    
+    <div id="mainpage_div_title"><h1>Welcome back,</h1></div>
+    <div id="mainpage_div_personaldetails">
+        <button type="button" id="mainpage_button_details" onclick = "onClickUserEditPage()">Edit Personal Details</button>
+    </div>
+    <br>
+    <div id="mainpage_classlist">
+               
+    </div>
+    <br><br>
+    <div id="mainpage_addclass">
+        <label for="mainpage_input_addclass">New Class Name:</label>
+        <input type="text" id="mainpage_input_addclass"></div>
+        <br><br>
+        <button type="button" onclick="postClass()">Add Class</button>
+    </div>
+</body>
+</html>
