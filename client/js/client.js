@@ -1,10 +1,10 @@
-const endPointRoot = "bcitchairheir.com/COMP4537/termproject/";
+const endPointRoot = "https://www.bcitchairheir.com/COMP4537/termproject/API/v1/";
 const key = localStorage.getItem('apikey');
-import{buildGradeTable} from "./mainpage.js";
+
 //Authentication Functions
 let login = () => {
-    let username = HTML.getElementById("usernamebox").innerHTML;
-    let password = HTML.getElementById("passwordbox").innerHTML;
+    let username = document.getElementById("login_input_username").innerHTML;
+    let password = document.getElementById("login_input_password").innerHTML;
     if(username && password) {
         getKey(username, password);
         location.href = "https://kparkweb.com/COMP4537/termproject/html/main_page.html"
@@ -78,7 +78,7 @@ let postUser = (username, firstname, lastname, password) => {
 //Class Functions
 
 //Get Function for Classes
-function getClasses() {
+let getClasses = () => {
     const xhttp = new XMLHttpRequest();
     xhttp.open("GET", endPointRoot + "class", true);
     xhttp.setRequestHeader('Content-Type', 'applicaton/json; charset=utf-8');
@@ -92,7 +92,7 @@ function getClasses() {
     }
 }
 //Post Function for Classes
-function postClass(classname, newclassname) {
+let postClass = (classname, newclassname) => {
     let classJSON = {name: + newclassname};
     const xhttp = new XMLHttpRequest();
     xhttp.open("POST", endPointRoot + "class?classname=" + classname, true);
@@ -106,7 +106,7 @@ function postClass(classname, newclassname) {
     }
 }
 
-function putClass(classname, newclassname) {
+let putClass = (classname, newclassname) => {
     let classJSON = {"name" : newclassname};
     const xhttp = new XMLHttpRequest();
     xhttp.open("PUT", endPointRoot + "class?classname=" + classname, true);
@@ -120,7 +120,7 @@ function putClass(classname, newclassname) {
     }
 }
 
-function deleteClass(classname) {
+let deleteClass = (classname) => {
     const xhttp = new XMLHttpRequest();
     xhttp.open("DELETE", endPointRoot + "class?classname=" + classname, true);
     xhttp.setRequestHeader('Authorization', 'Bearer' + key);
@@ -135,7 +135,7 @@ function deleteClass(classname) {
 
 // Grade Functions
 
-function getGrades(classname) {
+let getGrades = (classname) => {
     let xhttp = new XMLHttpRequest();    
     xhttp.open("GET", endPointRoot + "grade?classname=" + classname, true);
     xhttp.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
@@ -150,7 +150,7 @@ function getGrades(classname) {
 
 }
 
-function putGrade(gradename, classname, newname, newgrade) {
+let putGrade = (gradename, classname, newname, newgrade) => {
     let gradeJSON = {"name" : newname, 
                      "score" : newgrade};
     let xhttp = new XMLHttpRequest();
@@ -164,7 +164,7 @@ function putGrade(gradename, classname, newname, newgrade) {
     }
 }
 
-function postGrade(classname, newname, newgrade) {
+let postGrade = (classname, newname, newgrade) => {
     let studentJSON = {"name" : newname, 
                        "grade" : newgrade};
     const xhttp = new XMLHttpRequest();
@@ -180,7 +180,7 @@ function postGrade(classname, newname, newgrade) {
 
 }
 
-function deleteGrade(gradename, classname) {
+let deleteGrade = (gradename, classname) => {
     const xhttp = new XMLHttpRequest();
     xhttp.open("DELETE", endPointRoot + "grades?gradename=" + gradename + "&classname=" + classname, true);
     xhttp.setRequestHeader('Authorization', 'Bearer' + key);

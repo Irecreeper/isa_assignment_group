@@ -7,17 +7,19 @@
         <h1>Welcome to Gradebook. Login or Sign Up to Begin.</h1>
     </div>
     <br>
+    <script src = "../js/client.js"></script>
+    <script src = "../js/mainpage.js"></script>
     <div id="login_div_credentials">
         <label for="login_label_username">Username:</label>
         <input type="text" id="login_input_username" name="username"><br><br>
         <label for="login_label_password">Password:</label>
         <input type="password" id="login_input_password" name="password"><br><br>
-        <button type="button" id="login_button_login">Login</button>
+        <button type="button" id="login_button_login" onclick = "login()">Login</button>
     </div>
     <br>
     <div id="login_div_signup">
         <h3>Not a User Yet? Sign up here.</h3>
-        <button type="button" id="login_button_signup">Sign Up</button>
+        <button type="button" id="login_button_signup" onclick="redirect_signup()">Sign Up</button>
     </div>
 </body>
 </html>

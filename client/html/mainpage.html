@@ -3,18 +3,13 @@
 <head>
     <title>Login page for Gradebook</title>
 </head>
-<body>
-    <script src="../js/client.js"></script> 
+<script src="../js/client.js"></script> 
+<script src="../js/mainpage.js"></script>
+<body onload = "createClassList()">
+    
     <div id="mainpage_div_title"><h1>Welcome back,</h1></div>
     <div id="mainpage_gradelist">
-        <!--Username Input-->
-        <label for="signup_label_username">Username:</label>
-        <input type="text" id="signup_input_username" name="username"><br><br>
-
-        <label for="signup_label_password">Password:</label>
-        <input type="password" id="signup_input_password" name="password"><br><br>
-
-        <button type="button" id="signup_button_signup" onclick="login()">Register</button>
+        
     </div>
 </body>
 </html>
