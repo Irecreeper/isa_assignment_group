@@ -204,7 +204,9 @@ http.createServer(function (req, res) {
 					sqlPost = "INSERT INTO grade (class_id, name, score) " + //subquery!
 					"SELECT class_id, '" + gradename + "', " + score + " FROM class " +
 					"WHERE name = '" + classname + "' AND user_id = " + notedId;
-				}	
+				} else { //Basically a failure state.
+					res.end();
+				}
 				
 				if (sqlPost != "err") {
 					//Add to the database.
@@ -246,7 +248,7 @@ http.createServer(function (req, res) {
 					let lname = json_object.lname;
 					sqlPut = "UPDATE user SET username = '" + username + "', password_hashed = '" +  password + "', fname = '" + fname +  "', lname = '" + lname + "' " +
 					"WHERE user_id = " + notedId;
-				}else if (requestType == "/class") { //CLASS: Edits the class. Requires CLASSNAME.
+				} else if (requestType == "/class") { //CLASS: Edits the class. Requires CLASSNAME.
 					let oldclass = urlData.query.classname;
 					let classname = json_object.name;
 					sqlPut = "UPDATE grade SET name = '" + classname + "' WHERE user_id = " + notedId + " AND name = '" + oldclass + "'";
@@ -258,7 +260,9 @@ http.createServer(function (req, res) {
 					sqlPut = "UPDATE grade SET name = '" + gradename + "', score = " + score + " " +
 					"WHERE name = '" + oldgrade + "' AND class_id IN " + 
 					"(SELECT class_id FROM class WHERE user_id = " + notedId + " AND name = '" + classbelong + "')";
-				}	
+				} else { //Basically a failure state.
+					res.end();
+				}
 				
 				if (sqlPut != "err") {
 					//Add to the database.
@@ -280,7 +284,32 @@ http.createServer(function (req, res) {
 		//DELETE path: deletes data that's on the server (2 branches)
 		//classes, grades
 		if (method == "DELETE") {
+			//Select the proper query.
+			let sqlDelete = "err";
+			if (requestType == "/class") { //CLASS: Shoots the class. Very mean. Requires CLASSNAME.
+				let classname = urlData.query.classname;
+				let sqlDelete = "DELETE FROM class WHERE name = '" + classname + "' AND user_id = " + notedId;
+			} else if (requestType == "/grade") { //GRADE: Shoots the grade. Very mean. Requires GRADENAME.
+				let gradename = urlData.query.gradename;
+				let classbelong = urlData.query.classname;
+				let sqlDelete = "DELETE FROM grade " +
+				"WHERE name = '" + gradename + "' AND class_id IN " + 
+				"(SELECT class_id FROM class WHERE user_id = " + notedId + " AND name = '" + classbelong + "')";
+			} else { //Basically a failure state.
+				res.end();
+			}
 
+			if (sqlDelete != "err") {
+				db.query(sqlDelete, function(err, result) {
+					if (err != null) {
+						res.end("Delete failed.");
+						throw err;
+					}
+					res.end("Delete succeeded!");
+				});
+			} else {
+				res.end("Delete failed.");
+			}
 		}
 	}
 
