@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <link rel="stylesheet" href="../css/signup.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="../js/signup.js"></script>
 </head>
 <body>
-    <script src="../js/signup.js"></script>
-    <div id="signup_div_title"><h1>Type in a Unique Username and Password.</h1></div>
+    <div id="signup_div_title"><h1>Registration</h1></div>
+    <br>
     <div id="signup_div_credentials">
         <label for="signup_label_username">Username:</label>
+        <br>
         <input type="text" id="signup_input_username" name="username"><br><br>
 
         <label for="signup_label_password">Password:</label>
+        <br>
         <input type="password" id="signup_input_password" name="password"><br><br>
 
         <label for="signup_label_fname">First Name:</label>
+        <br>
         <input type="text" id="signup_input_fname" name="fname"><br><br>
 
         <label for="signup_label_lname">Last Name:</label>
+        <br>
         <input type="text" id="signup_input_lname" name="lname"><br><br>
 
         <button type="button" id="signup_button_signup" onclick="onClickPostUser()">Register</button>

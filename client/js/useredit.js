@@ -43,6 +43,7 @@ let putUser = () => {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             alert("Details Successfully Updated.");
+            localStorage.setItem("fname", newfname);
             window.location.href = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/mainpage.html';
         }
     }

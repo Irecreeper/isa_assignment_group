@@ -3,6 +3,7 @@
 
   <head>
     <title>Grades Page after Selecting a Class</title>
+    <link rel="stylesheet" href="../css/gradepage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   </head>
 
@@ -15,6 +16,7 @@
     <button type="button" id="buttonPutClass" onclick="putClass()">Edit Class Name</button>
     <br>
     <br>
+    <br>
     <div id="gradepage_list">
 
     </div>
@@ -22,10 +24,14 @@
     <br>
     <div id="gradepage_addgrade">
       <label for="gradepage_input_gradename">New Grade Name:</label>
+      <br>
       <input type="text" id="gradepage_input_gradename">
       <br>
+      <br>
       <label for="gradepage_input_gradescore">New Grade Score:</label>
+      <br>
       <input type="number" id="gradepage_input_gradescore">
+      <br>
       <br>
       <button type="button" onclick="onClickPostGrade()">Add Grade</button>
     </div>

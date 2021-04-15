@@ -2,21 +2,28 @@
 <html>
 <head>
     <script src="../js/useredit.js"></script>
+    <link rel="stylesheet" href="../css/useredit.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
 </head>
 
 <body onload = "onLoadGetUser()">    
-    <div id="userdet_div_title"><h1>Edit Your Details Here.</h1></div>
+    <div id="userdet_div_title"><h1>Edit Your Details Here</h1></div>
+    <br>
     <div id="userdet_div_credentials">
         <label for="userdet_label_username">Username:</label>
+        <br>
         <input type="text" id="userdet_input_username" name="username"><br><br>
 
         <label for="userdet_label_password">Password:</label>
+        <br>
         <input type="password" id="userdet_input_password" name="password"><br><br>
 
         <label for="userdet_label_fname">First Name:</label>
+        <br>
         <input type="text" id="userdet_input_fname" name="fname"><br><br>
 
         <label for="userdet_label_lname">Last Name:</label>
+        <br>
         <input type="text" id="userdet_input_lname" name="lname"><br><br>
 
         <button type="button" id="signup_button_signup" onclick="putUser()">Update</button>
