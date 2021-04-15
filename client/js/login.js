@@ -1,6 +1,4 @@
 const endPointRoot = "https://www.bcitchairheir.com/gradebase/";
-const myStorage = window.localStorage;
-
 
 //Authentication Functions
 //AJAX Call to get API key from Server.
@@ -12,10 +10,10 @@ let getKey = () => {
     xhttp.send();
     xhttp.onreadystatechange = () => {
         if(xhttp.readyState == 4 && xhttp.status == 200) {
-            console.log(xhttp.responseText);
-            alert(xhttp.responseText);
-            localStorage.setItem("apikey", xhttp.responseText);
-            window.location.href = "https://www.kparkweb.com/COMP4537/termproject/API/V1/html/mainpage.html";
+            localStorage.setItem("apikey", xhttp.response);
+            if(localStorage.getItem("apikey")) {
+                window.location.href = "https://www.kparkweb.com/COMP4537/termproject/API/V1/html/mainpage.html";
+            }
         } 
     }
 }

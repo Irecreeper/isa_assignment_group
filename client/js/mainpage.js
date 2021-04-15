@@ -15,7 +15,8 @@ let createJSONTable = (JSONArray, elementID) => {
     //Create Rows for Each Entry
     for(let i = 0; i < parsedJSON.length; i++) {
         tr = table.insertRow(-1);
-        let object = parsedJSON[i]["name"];
+        let object = parsedJSON[i].name;
+        console.log(typeof object);
         let tabCell = tr.insertCell(-1);
         tabCell.innerHTML = object;
         
@@ -23,13 +24,13 @@ let createJSONTable = (JSONArray, elementID) => {
         detailsbutton.innerHTML = "Details";
         detailsbutton.id = object;
         detailsbutton.value = object;
-        detailsbutton.setAttribute("onclick", "onClickGradePage(" + object.toString() + ")");
+        detailsbutton.setAttribute("onclick", "onClickGradePage(\'" + object + "\')");
         tr.append(detailsbutton);
         
         let deletebutton = document.createElement("button");
         deletebutton.innerHTML = "Delete";
         deletebutton.value = object;
-        deletebutton.setAttribute("onclick", "deleteClass(" + object.toString() + ")") ;
+        deletebutton.setAttribute("onclick", "deleteClass(\'" + object + "\')") ;
         tr.append(deletebutton);
     }
     
@@ -56,13 +57,13 @@ let onLoadMainPage = () => {
     xhttp.send();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            let parsedJSON = JSON.parse(xhttp.response);
+            let parsedJSON = xhttp.response;
             localStorage.setItem('user', parsedJSON);
         }
     }
     let userJSON = JSON.parse(localStorage.getItem('user'));
-    console.log(userJSON);
-    document.getElementById("mainpage_greeting").innerHTML = "Welcome Back " + userJSON[0]["fname"] + " " + userJSON[0]["lname"];
+    localStorage.setItem("fname", userJSON[0].fname);
+    document.getElementById("mainpage_greeting").innerHTML = "Welcome Back " + " " + userJSON[0].fname;
     getClasses();
 }
 
@@ -88,10 +89,9 @@ let postClass = () => {
 
 //AJAX Call to DELETE a class.
 let deleteClass = (classname) => {
-    console.log(classname);
     if(confirm("Are you sure you want to delete this class?")) {
         const xhttp = new XMLHttpRequest();
-        xhttp.open("DELETE", endPointRoot + "class?classname=" + classname.value + "&apikey=" + apikey, true);
+        xhttp.open("DELETE", endPointRoot + "class?classname=" + classname + "&apikey=" + apikey, true);
         xhttp.send();
         xhttp.onreadystatechange = function() {
             location.reload();
@@ -101,8 +101,7 @@ let deleteClass = (classname) => {
 
 //Method to redirect to a page showing all the grades under a class.
 let onClickGradePage = (classname) => {
-    console.log(classname.value);
-    localStorage.setItem('classname', classname.value);
+    localStorage.setItem('classname', classname);
     window.location.href = 'https://www.kparkweb.com/COMP4537/termproject/API/V1/html/gradepage.html';
 }
 

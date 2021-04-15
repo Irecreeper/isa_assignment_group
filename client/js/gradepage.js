@@ -15,7 +15,7 @@ let buildGradeTable = (JSONArray, elementID) => {
 
   let th2 = document.createElement("th");
   th2.innerHTML = "Score";
-  tr.appendChild(th);
+  tr.appendChild(th2);
 
 
   //Create Rows for Each Entry
@@ -30,14 +30,8 @@ let buildGradeTable = (JSONArray, elementID) => {
     let deletebutton = document.createElement("button");
     deletebutton.innerHTML = "Delete";
     deletebutton.value = object.name;
-    deletebutton.setAttribute("onclick", "deleteGrade(" + object.name + ")");
+    deletebutton.setAttribute("onclick", "deleteGrade(\'" + object.name + "\')");
     tr.append(deletebutton);
-
-    let editbutton = document.createElement("button");
-    editbutton.innerHTML = "Edit";
-    editbutton.value = object.name;
-    editbutton.setAttribute("onclick", "onClickRedirectEdit(" + object.name + ")");
-    tr.append(editbutton);
   }
 
   let divContainer = document.getElementById(elementID);
@@ -84,32 +78,35 @@ let postGrade = (newname, newgrade) => {
 
 //AJAX Call to DELETE an existing grade.
 let deleteGrade = (gradename) => {
-  let classname = localStorage.getItem("classname");
-  console.log(gradename.value);
-  const xhttp = new XMLHttpRequest();
-  xhttp.open("DELETE", endPointRoot + "grade?gradename=" + gradename.value + "&classname=" + classname + "&apikey=" + key, true);
-  xhttp.send();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      alert(this.responseText);
+    if(confirm("Are you sure you want to delete this class?")) {
+        let classname = localStorage.getItem("classname");
+        const xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", endPointRoot + "grade?gradename=" + gradename + "&classname=" + classname + "&apikey=" + key, true);
+        xhttp.send();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+            }
+            location.reload();
+      };
     }
-    location.reload();
-  };
 };
 
 //AJAX Call to PUT new details of a Class.
 let putClass = () => {
   let newclassname = prompt("Enter the new class name:", this.value);
-  if (newclassname !== null || newclassname !== "") {
-    let classJSON = {
+  if (newclassname) {
+    let classJSON = JSON.stringify({
       "name": newclassname
-    };
+    });
     const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", endPointRoot + "class?classname=" + this.value + "&apikey=" + key, true);
+    xhttp.open("PUT", endPointRoot + "class?classname=" + localStorage.getItem("classname") + "&apikey=" + key, true);
     xhttp.send(classJSON);
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         console.log(this.responseText);
+        localStorage.setItem("classname", newclassname);
+        location.reload();
       }
     }
   }

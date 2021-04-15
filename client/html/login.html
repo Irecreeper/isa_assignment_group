@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="../css/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 <body>
     <div id="login_div_title">
-        <h1>Welcome to Gradebook. Login or Sign Up to Begin.</h1>
+        <h1>Gradebase</h1>
     </div>
     <br>
     <script src = "../js/login.js"></script>
     <div id="login_div_credentials">
         <label for="login_label_username">Username:</label>
+        <br>
         <input type="text" id="login_input_username" name="username"><br><br>
 
         <label for="login_label_password">Password:</label>
+        <br>
         <input type="password" id="login_input_password" name="password"><br><br>
         
         <button type="button" id="login_button_login" onclick = "getKey()">Login</button>

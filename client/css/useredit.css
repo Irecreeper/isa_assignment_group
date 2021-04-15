@@ -19,11 +19,7 @@ button {
     margin-top: 4px;
 }
 
-h3 {
-    margin-left: 10px;
-}
-
-#login_div_title {
+#userdet_div_title {
     height: 100px;
     width: 100%;
     background: blue;
