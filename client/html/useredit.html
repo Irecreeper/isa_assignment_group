@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    <script src="../js/useredit.js"></script>
 </head>
-<script src="../js/useredit.js"></script>
+
 <body onload = "onLoadGetUser()">    
     <div id="userdet_div_title"><h1>Edit Your Details Here.</h1></div>
     <div id="userdet_div_credentials">
@@ -19,7 +19,7 @@
         <label for="userdet_label_lname">Last Name:</label>
         <input type="text" id="userdet_input_lname" name="lname"><br><br>
 
-        <button type="button" id="signup_button_signup" onclick="onClickPutUser()">Update</button>
+        <button type="button" id="signup_button_signup" onclick="putUser()">Update</button>
     </div>
 </body>
 </html>
