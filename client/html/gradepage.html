@@ -1,23 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
+
+  <head>
     <title>Grades Page after Selecting a Class</title>
-</head>
-<script src="../js/gradepage.js"></script> 
-<body onload = "onLoadGetGrades()">
-    
-    <div id="gradepage_div_title"><h1>Grades for </h1></div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  </head>
+
+  <body onload="getGrades()">
+    <script src="../js/gradepage.js"></script>
+    <div id="gradepage_div_title">
+      <h1 id="gradepage_div_title_headline">Grades</h1>
+    </div>
+    <br>
+    <button type="button" id="buttonPutClass" onclick="putClass()">Edit Class Name</button>
+    <br>
+    <br>
     <div id="gradepage_list">
-        
+
     </div>
+    <br>
+    <br>
     <div id="gradepage_addgrade">
-        <label for="gradepage_input_gradename">New Grade Name:</label>
-        <input type="text" id="gradepage_input_gradename"></div>
-        <br>
-        <label for="gradepage_input_gradescore">New Grade Score:</label>
-        <input type="number" id="gradepage_input_gradescore"></div>
-        <br>
-        <button type="button" onclick="onClickPostGrade()">Add Grade</button>
+      <label for="gradepage_input_gradename">New Grade Name:</label>
+      <input type="text" id="gradepage_input_gradename">
+      <br>
+      <label for="gradepage_input_gradescore">New Grade Score:</label>
+      <input type="number" id="gradepage_input_gradescore">
+      <br>
+      <button type="button" onclick="onClickPostGrade()">Add Grade</button>
     </div>
-</body>
+  </body>
+
 </html>
